@@ -1,53 +1,44 @@
 package main
 
 import (
-	"fmt"
-
+	"clientes"
 	"contas"
+	"fmt"
 )
 
+func pagarBoleto(conta verificarConta, valorDoBoleto float64) {
+	conta.Sacar(valorDoBoleto)
+}
+
+type verificarConta interface {
+	Sacar(valor float64) string
+}
+
 func main() {
-	// var contaDoGuilherme ContaCorrente
-	// contaDoGuilherme := ContaCorrente{}
+	clienteBruno := clientes.Titular{"Bruno", "123.123.123.12", "Desenvolvedor"}
+	contaDoBruno := contas.ContaCorrente{Titular: clienteBruno, NumeroAgencia: 123, NumeroConta: 123456}
 
-	// contaDoGuilherme.titular = "Guilherme"
-	// contaDoGuilherme.numeroAgencia = 589
-	// contaDoGuilherme.numeroConta = 123456
-	// contaDoGuilherme.saldo = 125.50
+	fmt.Println(contaDoBruno)
 
-	// contaDoGuilherme := ContaCorrente{titular: "Guilherme"}
+	contaExemplo := contas.ContaCorrente{}
+	// contaExemplo.Saldo = -100
 
-	//Criação das variáveis
-	contaDoGuilherme := contas.ContaCorrente{Titular: "Guilherme", NumeroAgencia: 589, NumeroConta: 123456, Saldo: 125.50}
-	contaDaBruna := contas.ContaCorrente{"Bruna", 222, 111222, 200}
+	fmt.Println(contaExemplo)
+	fmt.Println(contaExemplo.Depositar(500))
+	fmt.Println(contaExemplo.ObterSaldo())
 
-	fmt.Println(contaDoGuilherme)
-	fmt.Println(contaDaBruna)
+	contaDoDenis := contas.ContaPoupanca{}
+	contaDaPati := contas.ContaCorrente{}
 
-	var contaDaCris *contas.ContaCorrente
-	contaDaCris = new(contas.ContaCorrente)
-	contaDaCris.Titular = "Cris"
-	contaDaCris.Saldo = 500
+	fmt.Println(contaDoDenis)
+	fmt.Println(contaDaPati)
 
-	fmt.Println(*contaDaCris)
-	fmt.Println(contaDaCris)
+	contaDoDenis.Depositar(100)
+	pagarBoleto(&contaDoDenis, 60)
+	fmt.Println(contaDoDenis.ObterSaldo())
 
-	//Método saque
-	contaDaSilvia := contas.ContaCorrente{}
-	contaDaSilvia.Titular = "Silvia"
-	contaDaSilvia.Saldo = 500
-
-	fmt.Println(contaDaSilvia.Sacar(600))
-	status, valor := contaDaSilvia.Depositar(250)
-	fmt.Println(status, valor)
-	fmt.Println(contaDaSilvia.Saldo)
-
-	fmt.Println("\n\n")
-
-	contaDoGustavo := contas.ContaCorrente{Titular: "Gustavo", Saldo: 100}
-
-	statusTransf := contaDaSilvia.Transferencia(200, &contaDoGustavo)
-	fmt.Println(statusTransf)
-	fmt.Println(contaDaSilvia)
-	fmt.Println(contaDoGustavo)
+	contaDaLuisa := contas.ContaCorrente{}
+	contaDaLuisa.Depositar(500)
+	pagarBoleto(&contaDaLuisa, 400)
+	fmt.Println(contaDaLuisa.ObterSaldo())
 }
